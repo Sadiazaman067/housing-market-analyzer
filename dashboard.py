@@ -1,14 +1,22 @@
 import streamlit as st
 import streamlit.components.v1 as components
 import requests
-from dotenv import load_dotenv
 import os
 
-load_dotenv()
-API_KEY = os.getenv("RAPIDAPI_KEY")
+API_KEY = None
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+    API_KEY = os.getenv("RAPIDAPI_KEY")
+except ImportError:
+    pass
 
 st.set_page_config(page_title="RentSearch", page_icon="🏠", layout="wide")
-
+if not API_KEY:
+    try:
+        API_KEY = st.secrets["RAPIDAPI_KEY"]
+    except Exception:
+        pass
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
